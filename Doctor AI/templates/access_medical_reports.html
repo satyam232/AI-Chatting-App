@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Medical Reports</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: 'varela round', sans-serif !important;
+            background-color: #ffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            padding-top: 20px;
+            padding-bottom: 20px;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 47rem;
+            max-width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333333;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+        }
+
+        strong {
+            color: #333333;
+        }
+
+        hr {
+            display: none;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Access Medical Reports</h1>
+        <ul>
+            {% for block in blockchain.chain %}
+                <li>
+                    <strong>Doctor's Name: </strong> {{ block.doctor_name }}<br>
+                    <strong>Patient's Name:</strong> {{ block.patient_name }}<br>
+                    <strong>Medical Report:</strong> {{ block.medical_report }}<br>
+                    <strong>Timestamp:</strong> {{ block.timestamp }}<br>
+                    <hr>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

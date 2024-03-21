@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round:wght@400&display=swap" rel="stylesheet">
+    <title>Voice Chatbot</title>
+    <style>
+        body {
+            font-family: 'carmen sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+        }
+
+        .maincontainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Ensure full viewport height */
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: #00ffbb3b 0px 7px 29px 0px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        button {
+            font-family: 'varela round';
+            display: flex;
+            align-items: center;
+            margin: 0 auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #00ffbb;
+            color: black;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        #response {
+            margin-top: 20px;
+            padding: 12.5px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="maincontainer">
+        <div class="container">
+            <h1>AI DOC</h1>
+            <button onclick="startRecording()">How can i help you?</button>
+            <div id="response"></div>
+        </div>
+    </div>
+
+    <script>
+        function startRecording() {
+            var recognition = new webkitSpeechRecognition();
+            recognition.onresult = function(event) {
+                var message = event.results[0][0].transcript;
+                document.getElementById("response").innerHTML = "You said: " + message;
+                sendData(message);
+            };
+            recognition.start();
+        }
+
+        function sendData(message) {
+            fetch("/process_audio", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({message: message})
+            })
+            .then(response => response.json())
+            .then(data => {
+                var responseText = data.response;
+                var utterance = new SpeechSynthesisUtterance(responseText);
+                window.speechSynthesis.speak(utterance);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        }
+    </script>
+</body>
+</html>
+
+

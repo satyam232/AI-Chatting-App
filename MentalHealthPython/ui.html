@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Learning Prediction</title>
+</head>
+<body>
+    <h2>Machine Learning Prediction Form</h2>
+    <form id="predictionForm">
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br>
+
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+            <option value="1">Male</option>
+            <option value="2">Female</option>
+            <option value="3">Other</option>
+        </select><br>
+
+        <label for="relationship_status">Relationship Status:</label>
+        <select id="relationship_status" name="relationship_status" required>
+            <option value="1">Single</option>
+            <option value="2">In a Relationship</option>
+            <option value="3">Married</option>
+        </select><br>
+
+        <label for="occupation_status">Occupation Status:</label>
+        <select id="occupation_status" name="occupation_status" required>
+            <option value="1">Employed</option>
+            <option value="2">Unemployed</option>
+            <option value="3">Student</option>
+        </select><br>
+
+        <label for="use_social_media">Do you use social media?</label>
+        <select id="use_social_media" name="use_social_media" required>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+        </select><br>
+
+        <label for="avg_time_on_social_media">Average time on social media (hours):</label>
+        <input type="number" id="avg_time_on_social_media" name="avg_time_on_social_media" required><br>
+
+        <!-- Add other input fields as needed -->
+
+        <button type="button" onclick="makePrediction()">Submit</button>
+    </form>
+
+    <h3>Prediction Result:</h3>
+    <p id="predictionResult"></p>
+
+    <script>
+        function makePrediction() {
+            var formData = {
+                "age": document.getElementById("age").value,
+                "gender": document.getElementById("gender").value,
+                "relationship_status": document.getElementById("relationship_status").value,
+                "occupation_status": document.getElementById("occupation_status").value,
+                "use_social_media": document.getElementById("use_social_media").value,
+                "avg_time_on_social_media": document.getElementById("avg_time_on_social_media").value,
+                // Add other input fields as needed
+            };
+
+            fetch("http://127.0.0.1:5000/predict", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("predictionResult").innerHTML = "Predicted Class: " + data.prediction;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        }
+    </script>
+</body>
+</html>
